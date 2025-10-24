@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark-theme">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Правила Minecraft сервера</title>
+    <style>
+        :root {
+            --primary-color: #0ea5e9; /* Голубой цвет вместо зеленого */
+            --primary-dark: #0284c7;
+            --primary-light: #38bdf8;
+            --bg-dark: #0f172a;
+            --bg-darker: #0a0f1c;
+            --bg-card: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --border-color: #334155;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--bg-darker);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo img {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 0.5rem 0;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--primary-color);
+        }
+
+        /* Main Content */
+        main {
+            padding: 2rem 0;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            text-align: center;
+        }
+
+        .rules-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2rem;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+            background-color: var(--bg-card);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .sidebar-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .sidebar-nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.5rem 0.75rem;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .sidebar-nav a:hover, .sidebar-nav a.active {
+            background-color: rgba(14, 165, 233, 0.1);
+            color: var(--primary-color);
+        }
+
+        /* Rules Content */
+        .rules-content {
+            background-color: var(--bg-card);
+            border-radius: 8px;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .rule-section {
+            margin-bottom: 3rem;
+            scroll-margin-top: 100px;
+        }
+
+        .rule-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: "";
+            display: block;
+            width: 4px;
+            height: 24px;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        .rule-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .rule-item {
+            background-color: rgba(30, 41, 59, 0.5);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .rule-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .rule-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .allowed .rule-icon {
+            background-color: var(--success-color);
+        }
+
+        .disallowed .rule-icon {
+            background-color: var(--danger-color);
+        }
+
+        .rule-type {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .allowed .rule-type {
+            color: var(--success-color);
+        }
+
+        .disallowed .rule-type {
+            color: var(--danger-color);
+        }
+
+        .rule-description {
+            color: var(--text-secondary);
+        }
+
+        .rule-description ul {
+            margin-left: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .rule-description li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--bg-darker);
+            border-top: 1px solid var(--border-color);
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .copyright {
+            color: var(--text-secondary);
+        }
+
+        .server-info {
+            color: var(--text-secondary);
+            text-align: right;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .rules-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                position: static;
+                margin-bottom: 2rem;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            nav ul {
+                gap: 1rem;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .server-info {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <!-- Замените server-logo.png на ваше лого -->
+                    <img src="server-logo.png" alt="Логотип сервера">
+                    <div class="logo-text">BitLand</div>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#" class="active">Правила</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <h1 class="page-title">Правила сервера</h1>
+        
+        <div class="rules-container">
+            <aside class="sidebar">
+                <h2 class="sidebar-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                    </svg>
+                    Содержание
+                </h2>
+                <nav class="sidebar-nav">
+                    <a href="#section1" class="active">Игровой процесс и Читы</a>
+                    <a href="#section2">Взаимодействие с Игроками</a>
+                    <a href="#section3">Постройки и Гриферство</a>
+                    <a href="#section4">Ландшафт и Природа</a>
+                    <a href="#section5">Наказания</a>
+                </nav>
+            </aside>
+            
+            <div class="rules-content">
+                <section id="section1" class="rule-section">
+                    <h2 class="section-title">Раздел 1: Игровой процесс и Читы</h2>
+                    <p class="rule-description" style="margin-bottom: 1.5rem;">Здесь всё о том, что можно и нельзя использовать в игре.</p>
+                    
+                    <div class="rule-list">
+                        <div class="rule-item allowed">
+                            <div class="rule-header">
+                                <div class="rule-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </div>
+                                <div class="rule-type">РАЗРЕШЕНО</div>
+                            </div>
+                            <div class="rule-description">
+                                <ul>
+                                    <li>Играть в ванильном стиле, без модов, дающих преимущество.</li>
+                                    <li>Использовать ресурс-паки, которые меняют только внешний вид (текстуры, звуки), но не добавляют новые функции (например, прозрачные текстуры блоков или яркие текстуры).</li>
+                                    <li>Использовать карты и мини-хэлки (например, для поиска крепостей или сокровищ).</li>
+                                    <li>Строить автоматические фермы, которые работают в рамках ванильной механики игры (ирон-големы, растениеводство и т.д.).</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="rule-item disallowed">
+                            <div class="rule-header">
+                                <div class="rule-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </div>
+                                <div class="rule-type">ЗАПРЕЩЕНО</div>
+                            </div>
+                            <div class="rule-description">
+                                <ul>
+                                    <li>Использовать любые читы, читающие клиенты (Cheat Client), макросы и программы для автоматизации (например, Baritone).</li>
+                                    <li>Использовать любые моды, дающие игровое преимущество: X-Ray, Fly, Kill Aura, Speed и т.д.</li>
+                                    <li>Использовать дюпы (баги размножения предметов) и другие критические баги игры. Если нашли баг — сообщите администрации, не используйте его.</li>
+                                    <li>Использовать моды, которые добавляют мини-карту с радаром, показывающим игроков и мобов (как в JourneyMap). Допускается только мини-карта, показывающая рельеф и ваши метки.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="section2" class="rule-section">
+                    <h2 class="section-title">Раздел 2: Взаимодействие с Игроками и Чат</h2>
+                    <p class="rule-description" style="margin-bottom: 1.5rem;">Здесь всё об общении и отношениях между игроками.</p>
+                    
+                    <div class="rule-list">
+                        <div class="rule-item allowed">
+                            <div class="rule-header">
+                                <div class="rule-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </div>
+                                <div class="rule-type">РАЗРЕШЕНО</div>
+                            </div>
+                            <div class="rule-description">
+                                <ul>
+                                    <li>Уважительно общаться со всеми участниками сообщества.</li>
+                                    <li>Обсуждать, торговать, помогать новичкам.</li>
+                                    <li>Создавать совместные проекты и города.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="rule-item disallowed">
+                            <div class="rule-header">
+                                <div class="rule-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </div>
+                                <div class="rule-type">ЗАПРЕЩЕНО</div>
+                            </div>
+                            <div class="rule-description">
+                                <ul>
+                                    <li>Оскорблять, унижать, проявлять агрессию или разжигать ненависть в любом виде (в том числе расизм, сексизм и т.д.).</li>
+                                    <li>Спамить, флудить, использовать избыток Caps Lock.</li>
+                                    <li>Рекламировать другие сервера, проекты или ресурсы без разрешения администрации.</li>
+                                    <li>Выдавать себя за другого игрока или администратора.</li>
+                                    <li>Гриферить (см. следующий раздел).</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="section3" class="rule-section">
+                    <h2 class="section-title">Раздел 3: Постройки, Гриферство и Территория</h2>
+                    <p class="rule-description" style="margin-bottom: 1.5rem;">Самое важное: что можно делать с чужими и своими постройками.</p>
+                    
+                    <div class="rule-list">
+                        <div class="rule-item allowed">
+                            <div class="rule-header">
+                                <div class="rule-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </div>
+                                <div class="rule-type">РАЗРЕШЕНО</div>
+                            </div>
+                            <div class="rule-description">
+                                <ul>
+                                    <li>Строить в любом понравившемся месте, если оно не занято другим игроком.</li>
+                                    <li>Огораживать свою территорию забором, стеной или табличками с вашим ником, чтобы обозначить границы.</li>
+                                    <li>Торговать с другими игроками, арендовать у них землю или постройки по взаимной договоренности.</li>
+                                    <li>Осматривать чужие постройки, если вас пустили или они не закрыты.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="rule-item disallowed">
+                            <div class="rule-header">
+                                <div class="rule-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </div>
+                                <div class="rule-type">ЗАПРЕЩЕНО (считается гриферством)</div>
+                            </div>
+                            <div class="rule-description">
+                                <ul>
+                                    <li>Ломать, перестраивать или изменять чужие постройки без прямого разрешения владельца.</li>
+                                    <li>Красть вещи из сундуков, печек, варочных столиков и т.д., которые вам не принадлежат.</li>
+                                    <li>Убивать прирученных животных (собак, кошек) или использовать чужих животных без спроса.</li>
+                                    <li>Устраивать подкоп под чужую территорию с целью навредить или обойти защиту.</li>
+                                    <li>Оставлять неприятные "сюрпризы" (например, заложить динамит в чужом доме).</li>
+                                    <li>Ставить таблички с оскорблениями на чужой территории.</li>
+                                    <li>Нецелевое использование лавы, воды или огня, которое может повредить чужие постройки или ландшафт.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="section4" class="rule-section">
+                    <h2 class="section-title">Раздел 4: Ландшафт и Природа</h2>
+                    <p class="rule-description" style="margin-bottom: 1.5rem;">Как мы относимся к миру сервера.</p>
+                    
+                    <div class="rule-list">
+                        <div class="rule-item allowed">
+                            <div class="rule-header">
+                                <div class="rule-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </div>
+                                <div class="rule-type">РАЗРЕШЕНО</div>
+                            </div>
+                            <div class="rule-description">
+                                <ul>
+                                    <li>Добывать ресурсы, копать шахты, строить.</li>
+                                    <li>Изменять ландшафт под свои нужды.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="rule-item disallowed">
+                            <div class="rule-header">
+                                <div class="rule-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </div>
+                                <div class="rule-type">ЗАПРЕЩЕНО</div>
+                            </div>
+                            <div class="rule-description">
+                                <ul>
+                                    <li>Намеренно портить общий ландшафт "в радиусе гриферства" (например, вырубать лес вокруг чужой базы, чтобы она плохо смотрелась).</li>
+                                    <li>Оставлять за собой неприбранные столбы из грязи, "флаги" из факелов, незаконченные подкопы и прочие уродства. Соблюдайте эстетику!</li>
+                                    <li>Строить неприглядные постройки или "столбы" из блоков на видных местах (например, на спавне) с целью испортить вид.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="section5" class="rule-section">
+                    <h2 class="section-title">Наказания за нарушения</h2>
+                    
+                    <div class="rule-list">
+                        <div class="rule-item" style="border-left-color: #f59e0b;">
+                            <div class="rule-description">
+                                <p>Нарушение правил ведет к:</p>
+                                <ul>
+                                    <li>Бан на определенный срок.</li>
+                                    <li>Перманентный бан за серьезные или повторные нарушения.</li>
+                                </ul>
+                                <p style="margin-top: 1rem;"><strong>Важно:</strong> Администрация оставляет за собой право трактовать правила в спорных ситуациях. Если вы не уверены, можно ли что-то делать - спросите у администрации!</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="copyright">
+                    
+                </div>
+                <div class="server-info">
+                    IP: 46.174.53.48:27018<br>
+                    Версия: Minecraft Java 1.21.8
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Плавная прокрутка к разделам
+        document.querySelectorAll('.sidebar-nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+                
+                // Обновление активного пункта меню
+                document.querySelectorAll('.sidebar-nav a').forEach(a => {
+                    a.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+        
+        // Обновление активного пункта меню при прокрутке
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('.rule-section');
+            const navLinks = document.querySelectorAll('.sidebar-nav a');
+            
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                if (window.scrollY >= sectionTop) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${currentSection}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
